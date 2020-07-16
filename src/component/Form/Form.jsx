@@ -15,8 +15,8 @@ export default class Form extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
         const { name, email } = this.state;
-        const user = { username:name, password:email };
-        axios.post('https://app.sendm.net/login' , user).then(res=>{
+        const user = { name, email };
+        axios.post('https://jsonplaceholder.typicode.com/users' , user).then(res=>{
         this.props.handleAdd(res.data);})
         .catch(err => console.log(err))
     }
