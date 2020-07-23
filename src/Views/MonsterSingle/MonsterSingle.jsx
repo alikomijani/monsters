@@ -1,16 +1,16 @@
-import React, { useState } from 'react'
-
+import React, { useState , useEffect } from 'react'
+import {useParams} from 'react-router-dom';
 function MonsterSingle() {
-    const [monster, SetMonster] = useState({
-        address: { street: "Kulas Light", suite: "Apt. 556", city: "Gwenborough", zipcode: "92998-3874" },
-        company: { name: "Romaguera-Crona", catchPhrase: "Multi-layered client-server neural-net", bs: "harness real-time e-markets" },
-        email: "Sincere@april.biz",
-        id: 1,
-        name: "Leanne Graham",
-        phone: "1-770-736-8031 x56442",
-        username: "Bret",
-        website: "hildegard.org",
-    })
+    const {id} = useParams();
+    const [monster, SetMonster] = useState({})
+    const getData = () => {
+        fetch(`https://jsonplaceholder.typicode.com/users/${id}`).then(res => res.json()).then(data => {
+            SetMonster(data);
+            console.log(data)
+        })
+    }
+    useEffect(() => { getData(); }, []);
+
     return (
         <div className='MonsterSingle'>
             <div className='card'>

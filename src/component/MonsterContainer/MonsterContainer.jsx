@@ -12,7 +12,6 @@ export default function MonsterContainer() {
         setMonsters(monsters.filter(monster => monster.id !== id));
     }
     const getData = () => {
-        console.log('1')
         fetch('https://jsonplaceholder.typicode.com/users').then(res => res.json()).then(data => {
             setMonsters(data);
             console.log(data)
@@ -34,10 +33,6 @@ export default function MonsterContainer() {
     return (
         <div className='monster-container'>
             <Search handleChange={handleChange} search={search} />
-            {/* <button onClick={toggleForm}> {showForm ? "hide form" : "show form"} </button>
-            {
-                showForm ? <Form handleAdd={handleAddMonster} /> : null
-            } */}
             <MonsterTable filteredMonsters={filteredMonsters} handleDelete={handleDelete} />
         </div>
     )
