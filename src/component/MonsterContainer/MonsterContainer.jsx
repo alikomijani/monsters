@@ -1,52 +1,44 @@
-import React, { Component } from 'react';
-
-import Form from '../Form/Form';
+import React, { useState, useEffect } from 'react';
 import MonsterTable from '../MonsterTable/MonsterTable';
 import Search from '../Search/Search';
 import './monster-container.scss';
-export default class MonsterContainer extends Component {
-    constructor(props) {
-        super(props);
-        console.log('constractor is loaded!');
-        this.state = {
-            monsters: [],
-            search: '',
-            showForm: false
-        }
+export default function MonsterContainer() {
+
+    const [monsters, setMonsters] = useState([]);
+    const [search, setSearch] = useState('');
+    const [showForm, setShowForm] = useState(false);
+
+    const handleDelete = (id) => {
+        setMonsters(monsters.filter(monster => monster.id !== id));
     }
-    handleDelete = (id) => {
-        const { monsters } = this.state;
-        this.setState({ monsters: monsters.filter(monster => monster.id !== id) });
-    }
-    componentDidMount() {
+    const getData = () => {
+        console.log('1')
         fetch('https://jsonplaceholder.typicode.com/users').then(res => res.json()).then(data => {
-            this.setState({ monsters: data })
+            setMonsters(data);
+            console.log(data)
         })
     }
-    handleChange = (event) => {
-        const { name, value } = event.target;
-        this.setState({ [name]: value })
+    useEffect(() => { getData(); }, []);
+
+    const handleChange = (event) => {
+        const { value } = event.target;
+        setSearch(value);
     }
-    handleAdd = (obj) => {
-        this.setState({ monsters: [obj, ...this.state.monsters] })
-    }
-    toggleForm = () => {
-        this.setState(
-            { showForm: !this.state.showForm }
-        )
-    }
-    render() {
-        const { monsters, search, showForm } = this.state;
-        let filteredMonsters = monsters.filter(item => item.name.toLowerCase().startsWith(search.toLowerCase()))
-        return (
-            <div className= 'monster-container'>
-                <Search handleChange={this.handleChange} search={search} />
-                <button onClick={this.toggleForm}> {showForm ?  "hide form":"show form" } </button>
-                {
-                    showForm ? <Form handleAdd={this.handleAdd} /> : null
-                }
-                <MonsterTable filteredMonsters={filteredMonsters} handleDelete={this.handleDelete} />
-            </div>
-        )
-    }
+    // const handleAddMonster = (obj) => {
+    //     setMonsters([obj, ...monsters])
+    // }
+    // const toggleForm = () => {
+    //     setShowForm(!showForm)
+    // }
+    let filteredMonsters = monsters.filter(item => item.name.toLowerCase().startsWith(search.toLowerCase()))
+    return (
+        <div className='monster-container'>
+            <Search handleChange={handleChange} search={search} />
+            {/* <button onClick={toggleForm}> {showForm ? "hide form" : "show form"} </button>
+            {
+                showForm ? <Form handleAdd={handleAddMonster} /> : null
+            } */}
+            <MonsterTable filteredMonsters={filteredMonsters} handleDelete={handleDelete} />
+        </div>
+    )
 }

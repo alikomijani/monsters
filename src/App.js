@@ -1,15 +1,19 @@
 import React from 'react';
 import './App.css';
-import MonsterContainer from './component/MonsterContainer/MonsterContainer';
-class App extends React.Component {
-  
-  render() {
+import MonsterSingle from './Views/MonsterSingle/MonsterSingle';
+import AddMonster from './Views/AddMonster/AddMonster';
+import MonsterArchive from './Views/MonstersArchive/MonsterArchive';
+
+function App () {
     return (
       <div className="App">
-        <MonsterContainer/>
+         <AddMonster/>
+         <MonsterSingle/>
+        <MonsterArchive/>
+       
+       
       </div>
     );
-  }
 }
 
 export default App;

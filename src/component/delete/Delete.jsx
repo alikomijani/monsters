@@ -1,9 +1,7 @@
-import React, { Component } from 'react'
+import React from 'react';
 
-export default class Delete extends Component {
-    render() {
-        return (
-            <button onClick={this.props.handleDelete} >pack me!</button>
-        )
-    }
+export default function Delete({ handleDelete , id }) {
+    return (
+        <button onClick={()=>handleDelete(id)} >pack me!</button>
+    )
 }
