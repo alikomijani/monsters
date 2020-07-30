@@ -1,9 +1,9 @@
 import React from 'react';
-import Form from '../../component/Form/Form';
-function AddMonster() {
+import AddNewMonster from '../../component/AddNewMonster/AddNewMonster';
+function AddMonster(props) {
     return (
         <div className='AddMonster'>
-            <Form/>
+            <AddNewMonster />
         </div>
     )
 }

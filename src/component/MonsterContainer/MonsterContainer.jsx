@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import MonsterTable from '../MonsterTable/MonsterTable';
+import MonsterCard from '../MonsterCard/MonsterCard';
 import Search from '../Search/Search';
-import './monster-container.scss';
+import { Row, Col, Modal, ModalHeader, ModalFooter, ModalBody, Button } from 'reactstrap'
 export default function MonsterContainer() {
 
     const [monsters, setMonsters] = useState([]);
     const [search, setSearch] = useState('');
-    const [showForm, setShowForm] = useState(false);
+    const [deleteModal, setDeleteModal] = useState(false);
+    const [selectedMonster, setSelectedMonster] = useState(null);
 
     const handleDelete = (id) => {
         setMonsters(monsters.filter(monster => monster.id !== id));
@@ -26,14 +27,33 @@ export default function MonsterContainer() {
     // const handleAddMonster = (obj) => {
     //     setMonsters([obj, ...monsters])
     // }
-    // const toggleForm = () => {
-    //     setShowForm(!showForm)
-    // }
+    const toggleDeleteModal = (id = null) => {
+        setDeleteModal(!deleteModal);
+        setSelectedMonster(id);
+    }
     let filteredMonsters = monsters.filter(item => item.name.toLowerCase().startsWith(search.toLowerCase()))
     return (
-        <div className='monster-container'>
+        <>
+            <Modal isOpen={deleteModal} toggle={toggleDeleteModal}>
+                <ModalHeader toggle={toggleDeleteModal} className='bg-warning'>DELETE</ModalHeader>
+                <ModalBody>Are your sure to delete this item?</ModalBody>
+                <ModalFooter>
+                    <Button onClick={() => {
+                        handleDelete(selectedMonster);
+                        toggleDeleteModal();
+                    }
+                    } color='danger'>Delete</Button>
+                    <Button onClick={toggleDeleteModal} color='primary'>Cancel</Button>
+                </ModalFooter>
+            </Modal>
             <Search handleChange={handleChange} search={search} />
-            <MonsterTable filteredMonsters={filteredMonsters} handleDelete={handleDelete} />
-        </div>
+            <Row className='monster-container' xs="1" sm="2" md="3" xl="4" >
+                {filteredMonsters.map((item) => (
+                    <Col key={item.id} className={'mt-4'}>
+                        <MonsterCard monster={item} DeleteMe={() => toggleDeleteModal(item.id)} />
+                    </Col>
+                ))}
+            </Row>
+        </>
     )
 }

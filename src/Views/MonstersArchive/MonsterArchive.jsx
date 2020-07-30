@@ -1,8 +1,8 @@
 import React from 'react';
 import MonsterContainer from '../../component/MonsterContainer/MonsterContainer';
-function MonsterArchive() {
+function MonsterArchive(props) {
     return (
-        <div class="MonsterArchive">
+        <div className="MonsterArchive">
             <MonsterContainer />
         </div>
     )
