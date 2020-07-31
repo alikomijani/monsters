@@ -16,7 +16,8 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  Redirect
 } from "react-router-dom";
 
 function App() {
@@ -32,10 +33,10 @@ function App() {
             <Collapse isOpen={isOpen} navbar>
               <Nav className="mr-auto" navbar>
                 <NavItem>        
-                  <Link className='nav-link' to="monsters">Monsters list</Link>
+                  <Link className='nav-link' to="/monsters">Monsters list</Link>
                 </NavItem>
                 <NavItem>
-                  <Link  className='nav-link' to="monsters/add">New Monster</Link> 
+                  <Link  className='nav-link' to="/monsters/add">New Monster</Link> 
                 </NavItem>
               </Nav>
             </Collapse>

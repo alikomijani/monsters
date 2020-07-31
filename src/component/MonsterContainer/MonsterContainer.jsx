@@ -1,24 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import MonsterCard from '../MonsterCard/MonsterCard';
 import Search from '../Search/Search';
-import { Row, Col, Modal, ModalHeader, ModalFooter, ModalBody, Button } from 'reactstrap'
+import { Row, Col, Modal, ModalHeader, ModalFooter, ModalBody, Button, Spinner } from 'reactstrap'
 export default function MonsterContainer() {
 
-    const [monsters, setMonsters] = useState([]);
+    const [monsters, setMonsters] = useState(localStorage.getItem('monsters')?JSON.parse(localStorage.getItem('monsters')):[]);
     const [search, setSearch] = useState('');
     const [deleteModal, setDeleteModal] = useState(false);
     const [selectedMonster, setSelectedMonster] = useState(null);
+    const [pending, setPending] = useState(false);
 
     const handleDelete = (id) => {
         setMonsters(monsters.filter(monster => monster.id !== id));
+        localStorage.setItem('monsters',JSON.stringify(monsters.filter(monster => monster.id !== id)))
     }
-    const getData = () => {
-        fetch('https://jsonplaceholder.typicode.com/users').then(res => res.json()).then(data => {
-            setMonsters(data);
-            console.log(data)
-        })
-    }
-    useEffect(() => { getData(); }, []);
+    useEffect(() => {
+        
+    }, []);
 
     const handleChange = (event) => {
         const { value } = event.target;
@@ -31,6 +29,7 @@ export default function MonsterContainer() {
         setDeleteModal(!deleteModal);
         setSelectedMonster(id);
     }
+    console.log(monsters);
     let filteredMonsters = monsters.filter(item => item.name.toLowerCase().startsWith(search.toLowerCase()))
     return (
         <>
@@ -47,13 +46,24 @@ export default function MonsterContainer() {
                 </ModalFooter>
             </Modal>
             <Search handleChange={handleChange} search={search} />
-            <Row className='monster-container' xs="1" sm="2" md="3" xl="4" >
-                {filteredMonsters.map((item) => (
-                    <Col key={item.id} className={'mt-4'}>
-                        <MonsterCard monster={item} DeleteMe={() => toggleDeleteModal(item.id)} />
-                    </Col>
-                ))}
-            </Row>
+            {
+                pending ? <div className='text-center'>
+                    <Spinner color="primary" />
+                    <Spinner color="secondary" />
+                    <Spinner color="success" />
+                    <Spinner color="danger" />
+                    <Spinner color="warning" />
+                    <Spinner color="info" />
+                    <Spinner color="dark" />
+                </div> : <Row className='monster-container' xs="1" sm="2" md="3" xl="4" >
+                        {filteredMonsters.map((item) => (
+                            <Col key={item.id} className={'mt-4'}>
+                                <MonsterCard monster={item} DeleteMe={() => toggleDeleteModal(item.id)} />
+                            </Col>
+                        ))}
+                    </Row>
+            }
+
         </>
     )
 }

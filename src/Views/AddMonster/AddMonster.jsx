@@ -1,9 +1,9 @@
 import React from 'react';
 import AddNewMonster from '../../component/AddNewMonster/AddNewMonster';
-function AddMonster(props) {
+function AddMonster({handleAdd}) {
     return (
         <div className='AddMonster'>
-            <AddNewMonster />
+            <AddNewMonster handleAdd={handleAdd} />
         </div>
     )
 }
