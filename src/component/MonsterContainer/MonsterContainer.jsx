@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import MonsterCard from '../MonsterCard/MonsterCard';
 import Search from '../Search/Search';
-import { Row, Col, Modal, ModalHeader, ModalFooter, ModalBody, Button, Spinner } from 'reactstrap'
-export default function MonsterContainer() {
+import { Row, Col, Modal, ModalHeader, ModalFooter, ModalBody, Button, Spinner } from 'reactstrap';
+import {connect} from 'react-redux';
+import {deleteMonster} from './../../redux/monster/monster.actions';
+function MonsterContainer({monsters , deleteMonster}) {
 
-    const [monsters, setMonsters] = useState(localStorage.getItem('monsters')?JSON.parse(localStorage.getItem('monsters')):[]);
     const [search, setSearch] = useState('');
     const [deleteModal, setDeleteModal] = useState(false);
     const [selectedMonster, setSelectedMonster] = useState(null);
     const [pending, setPending] = useState(false);
 
     const handleDelete = (id) => {
-        setMonsters(monsters.filter(monster => monster.id !== id));
-        localStorage.setItem('monsters',JSON.stringify(monsters.filter(monster => monster.id !== id)))
+        deleteMonster(id)
     }
     useEffect(() => {
         
@@ -63,7 +63,12 @@ export default function MonsterContainer() {
                         ))}
                     </Row>
             }
-
         </>
     )
 }
+const mapStateToProps = state =>{
+    return {
+        monsters :state.monsters.monsters_list,
+    }
+}
+export default connect(mapStateToProps ,{deleteMonster , })(MonsterContainer)

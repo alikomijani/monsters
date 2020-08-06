@@ -7,16 +7,14 @@ function MonsterSingle(props) {
     const { id } = useParams();
     const [monster, setMonster] = useState({})
     const getData = () => {
-        // axios.get(`https://jsonplaceholder.typicode.com/users/${id}`).
-        //     then(res => res.data).then(data => {
-        //         SetMonster(data);
-        //         console.log(data)
-        //     }).catch(err => {
-        //         SetMonster(false)
-        //     }
-        //     )
-        let monsters = JSON.parse(localStorage.getItem('monsters'))
-        setMonster(monsters.find(item=>item.id == id))
+        axios.get(`https://jsonplaceholder.typicode.com/users/${id}`).
+            then(res => res.data).then(data => {
+                setMonster(data);
+                console.log(data)
+            }).catch(err => {
+                setMonster(false)
+            }
+            )
     }
     useEffect(() => { getData(); }, []);
     return (
