@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Form, Input, FormGroup, Label, Button } from 'reactstrap';
 import { v4 as uuidv4 } from 'uuid';
-export default function AddNewMonster({ handleAdd }) {
+import { addMonster } from './../../redux/monster/monster.actions';
+import { connect } from 'react-redux';
+function AddNewMonster({ addMonster }) {
     let history = useHistory();
     const [user, setUser] = useState({
         name: '',
         email: '',
-        website:'',
-        phone:'',
-        username:''
+        website: '',
+        phone: '',
+        username: ''
     })
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -20,13 +22,10 @@ export default function AddNewMonster({ handleAdd }) {
     }
     const handleSubmit = (event) => {
         event.preventDefault();
-        let monsters=localStorage.getItem('monsters')?JSON.parse(localStorage.getItem('monsters')):[]
-        const userId = uuidv4();
-        monsters.push({...user , id:userId})
-        localStorage.setItem('monsters',JSON.stringify(monsters))
-        history.push(`/monsters/${userId}`);
+        addMonster({ id: uuidv4(), name, email })
+        history.push('/monsters')
     }
-    const { name, email, website, phone,username } = user;
+    const { name, email, website, phone, username } = user;
     return (
         <Form onSubmit={handleSubmit}>
             <FormGroup>
@@ -55,3 +54,4 @@ export default function AddNewMonster({ handleAdd }) {
     )
 
 }
+export default connect(null, { addMonster })(AddNewMonster)
